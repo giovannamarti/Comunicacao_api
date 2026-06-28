@@ -2,33 +2,32 @@ package com.luizalebs.comunicacao_api.business.service;
 
 import com.luizalebs.comunicacao_api.api.dto.ComunicacaoInDTO;
 import com.luizalebs.comunicacao_api.api.dto.ComunicacaoOutDTO;
-import com.luizalebs.comunicacao_api.business.converter.ComunicacaoConverter;
+import com.luizalebs.comunicacao_api.business.mapper.ComunicacaoConverter;
 import com.luizalebs.comunicacao_api.infraestructure.entities.ComunicacaoEntity;
 import com.luizalebs.comunicacao_api.infraestructure.enums.StatusEnvioEnum;
 import com.luizalebs.comunicacao_api.infraestructure.repositories.ComunicacaoRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class ComunicacaoService {
 
     private final ComunicacaoRepository repository;
-    private final ComunicacaoConverter converter;
+    private final ComunicacaoConverter comunicacaoConverter;
 
-    public ComunicacaoService(ComunicacaoRepository repository, ComunicacaoConverter converter) {
-        this.repository = repository;
-        this.converter = converter;
-    }
 
     public ComunicacaoOutDTO agendarComunicacao(ComunicacaoInDTO dto) {
         if (Objects.isNull(dto)) {
             throw new RuntimeException();
         }
-        dto.setStatusEnvio(StatusEnvioEnum.PENDENTE);
-        ComunicacaoEntity entity = converter.paraEntity(dto);
+        ComunicacaoEntity entity = comunicacaoConverter.paraEntity(dto);
+        entity.setStatusEnvio(StatusEnvioEnum.PENDENTE);
+
         repository.save(entity);
-        ComunicacaoOutDTO outDTO = converter.paraDTO(entity);
+        ComunicacaoOutDTO outDTO = comunicacaoConverter.paraDTO(entity);
         return outDTO;
     }
 
@@ -37,7 +36,7 @@ public class ComunicacaoService {
         if (Objects.isNull(entity)) {
             throw new RuntimeException();
         }
-        return converter.paraDTO(entity);
+        return comunicacaoConverter.paraDTO(entity);
     }
 
     public ComunicacaoOutDTO alterarStatusComunicacao(String emailDestinatario) {
@@ -47,7 +46,7 @@ public class ComunicacaoService {
         }
         entity.setStatusEnvio(StatusEnvioEnum.CANCELADO);
         repository.save(entity);
-        return (converter.paraDTO(entity));
+        return (comunicacaoConverter.paraDTO(entity));
     }
 
 }
