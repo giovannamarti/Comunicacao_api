@@ -1,56 +1,23 @@
-/*package com.luizalebs.comunicacao_api.business.mapper;
+package com.luizalebs.comunicacao_api.business.mapper;
 
 import com.luizalebs.comunicacao_api.api.dto.ComunicacaoInDTO;
 import com.luizalebs.comunicacao_api.api.dto.ComunicacaoOutDTO;
 import com.luizalebs.comunicacao_api.infraestructure.entities.ComunicacaoEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
 
 
 //@Component
+
 @Mapper(componentModel = "spring")
 public interface ComunicacaoConverter {
+
+@Mapping(source="dataHoraEnvio",target = "dataHoraEnvio" )
 
     ComunicacaoEntity paraEntity(ComunicacaoInDTO dto);
 
     ComunicacaoOutDTO paraDTO(ComunicacaoEntity entity);
 
 
-} */
-
-package com.luizalebs.comunicacao_api.business.mapper;
-
-import com.luizalebs.comunicacao_api.api.dto.ComunicacaoInDTO;
-import com.luizalebs.comunicacao_api.api.dto.ComunicacaoOutDTO;
-import com.luizalebs.comunicacao_api.infraestructure.entities.ComunicacaoEntity;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
-
-@AllArgsConstructor
-@Component
-public class ComunicacaoConverter {
-
-    public ComunicacaoEntity paraEntity(ComunicacaoInDTO dto) {
-        return ComunicacaoEntity.builder()
-                .dataHoraenvio(dto.getDataHoraEnvio())
-                .emailDestinatario(dto.getEmailDestinatario())
-                .nomeDestinatario(dto.getNomeDestinatario())
-                .mensagem(dto.getMensagem())
-                .modoDeEnvio(dto.getModoDeEnvio())
-                .statusEnvio(dto.getStatusEnvio())
-                .telefoneDestinatario(dto.getTelefoneDestinatario())
-                .build();
-    }
-
-    public ComunicacaoOutDTO paraDTO(ComunicacaoEntity entity) {
-        return ComunicacaoOutDTO.builder()
-                .dataHoraEnvio(entity.getDataHoraenvio())
-                .emailDestinatario(entity.getEmailDestinatario())
-                .nomeDestinatario(entity.getNomeDestinatario())
-                .mensagem(entity.getMensagem())
-                .modoDeEnvio(entity.getModoDeEnvio())
-                .telefoneDestinatario(entity.getTelefoneDestinatario())
-                .statusEnvio(entity.getStatusEnvio())
-                .build();
-    }
 }
